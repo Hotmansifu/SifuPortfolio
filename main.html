@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(100px); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: visible;
+            animation: slideUp 1s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            min-height: 1.5em;
+        }
+
+        .cursor {
+            display: inline-block;
+            margin-left: 3px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .content {
+            padding: 40px 40px 60px 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 1.2s; }
+        section:nth-child(2) { animation-delay: 1.4s; }
+        section:nth-child(3) { animation-delay: 1.6s; }
+        section:nth-child(4) { animation-delay: 1.8s; }
+        section:nth-child(5) { animation-delay: 2s; }
+        section:nth-child(6) { animation-delay: 2.2s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            color: #f8f9fa;
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f8f9fa;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #ff6b35;
+            animation: expandWidth 1s ease-out forwards;
+        }
+
+        @keyframes expandWidth {
+            to { width: 100px; }
+        }
+
+        /* ABOUT ME: make it readable, not gray */
+        #about .description {
+            color: #f8f9fa;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 20px 22px;
+            border-radius: 12px;
+            line-height: 1.7;
+        }
+
+        .job, .education-item {
+            margin-bottom: 20px;
+            padding: 16px 18px;
+            background: rgba(248, 249, 250, 0.96);
+            border-radius: 10px;
+            border-left: 4px solid #1e3c72;
+            transition: all 0.3s ease;
+            transform: translateX(-10px);
+            opacity: 0;
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        .job:hover, .education-item:hover {
+            transform: translateX(5px) scale(1.01);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+            border-left-color: #ff6b35;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .job h3, .education-item h3 {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 4px;
+        }
+
+        .job h3 a, .education-item h3 a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .job h3 a:hover, .education-item h3 a:hover {
+            color: #ff6b35;
+        }
+
+        .job-title, .degree {
+            color: #2a5298;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.98em;
+        }
+
+        .date {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .description {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* EXPERIENCE GRID – less vertical space */
+        .jobs-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        /* Bullet list for job descriptions */
+        .description-list {
+            margin: 6px 0 0 18px;
+            padding-left: 0;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .description-list li {
+            margin-bottom: 4px;
+        }
+
+        .languages, .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .language-item, .skill-item {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            animation: popIn 0.5s ease-out forwards;
+        }
+
+        .language-item:nth-child(1), .skill-item:nth-child(1) { animation-delay: 0.1s; }
+        .language-item:nth-child(2), .skill-item:nth-child(2) { animation-delay: 0.2s; }
+        .language-item:nth-child(3), .skill-item:nth-child(3) { animation-delay: 0.3s; }
+        .language-item:nth-child(4), .skill-item:nth-child(4) { animation-delay: 0.4s; }
+        .language-item:nth-child(5), .skill-item:nth-child(5) { animation-delay: 0.5s; }
+        .language-item:nth-child(6), .skill-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .language-item:hover, .skill-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .contact-info {
+            background: rgba(248, 249, 250, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .contact-info a {
+            color: #1e3c72;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .contact-info a:hover {
+            color: #ff6b35;
+            transform: translateY(-3px);
+        }
+
+        .cert-item {
+            background: rgba(248, 249, 250, 0.96);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid #1e3c72;
+            transition: all 0.3s ease;
+        }
+
+        .cert-item:hover {
+            transform: translateX(5px);
+            border-left-color: #ff6b35;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cert-item strong {
+            color: #1e3c72;
+            font-size: 0.95em;
+        }
+
+        .cert-item small {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px 15px 40px 15px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .contact-info a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .jobs-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container" id="mainContainer">
+        <header>
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+                <div style="flex: 1; min-width: 200px; text-align: left;">
+                    <h1>Luka Andghuladze</h1>
+                    <p><span id="typed-text"></span><span class="cursor">|</span></p>
+                    <div style="margin-top: 15px; font-size: 0.9em;">
+                        <a href="mailto:landghuladze@constructor.university" style="color: white; text-decoration: none; margin-right: 15px;">📧 Email</a>
+                        <a href="tel:+4915237260783" style="color: white; text-decoration: none; margin-right: 15px;">📞 +49 152 3726 0783</a>
+                        <a href="https://www.linkedin.com/in/luka-andghuladze-866382210/" target="_blank" style="color: white; text-decoration: none; margin-right: 15px;">💼 LinkedIn</a>
+                        <a href="https://github.com/Hotmansifu/" target="_blank" style="color: white; text-decoration: none;">💻 GitHub</a>
+                    </div>
+                </div>
+
+                <!-- Simple header picture area – set your own src -->
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <div class="profile-picture" style="width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 4px solid white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <!-- Replace profile.jpg with your actual image path -->
+                        <img src="luka.andghuladze.png" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- About Section -->
+            <section id="about" class="reveal">
+                <h2>About Me</h2>
+                <p class="description">
+                    Passionate Cybersecurity Professional and Computer Science student at Constructor University with 3+ years of hands-on experience 
+                    in penetration testing, malware analysis, and threat intelligence. Specializing in reverse engineering with tools like Ghidra, IDA, 
+                    and x64dbg, I investigate intrusion vectors and document findings with reproducible PoCs. I've identified and resolved 50+ critical 
+                    vulnerabilities while building Python tools for log parsing and YARA-based hunting. Currently researching AI/edge workload security 
+                    and malware families, mapping TTPs to MITRE ATT&CK framework for comprehensive threat detection.
+                </p>
+            </section>
+
+            <!-- Work Experience Section -->
+            <section id="experience" class="reveal">
+                <h2>Work Experience</h2>
+
+                <div class="jobs-wrapper">
+                    <div class="job">
+                        <h3><a href="https://constructor.tech/" target="_blank">Constructor Technology AG</a></h3>
+                        <div class="job-title">Research Analyst - Cybersecurity</div>
+                        <div class="date">Sep 2025 - Present | Schaffhausen, Switzerland</div>
+                        <ul class="description-list">
+                            <li>Analyzed malware families targeting AI and edge workloads to understand TTPs and persistence methods.</li>
+                            <li>Drafted concise threat intel briefs with IoCs and MITRE ATT&amp;CK mapping for host and network detections.</li>
+                            <li>Prototyped Python scripts to normalize telemetry and surface behavior-based indicators across platforms.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3><a href="https://www.acronis.com/" target="_blank">Acronis</a></h3>
+                        <div class="job-title">#CyberFIT Cyber Security Intern</div>
+                        <div class="date">Jun 2025 - Aug 2025 | Remote, Munich, Germany</div>
+                        <ul class="description-list">
+                            <li>Built small reverse-engineering labs with Ghidra/x64dbg for unpacking and API tracing practice.</li>
+                            <li>Translated complex technical behaviors into short, practical detection tips for learners.</li>
+                            <li>Helped develop and deploy virtual training labs for 200+ partners worldwide.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3><a href="https://www.ol.ge/en" target="_blank">Orient Logic</a></h3>
+                        <div class="job-title">Cyber Security Engineer</div>
+                        <div class="date">Mar 2024 - Jun 2025 | Remote, Tbilisi, Georgia</div>
+                        <ul class="description-list">
+                            <li>Tuned IDS/IPS and WAF rulesets and authored Sigma/YARA rules for targeted detections.</li>
+                            <li>Correlated EDR, NetFlow, and proxy logs to support incident investigations and identify malicious activity.</li>
+                            <li>Reduced security breaches by 27% via deployment of firewalls, IPS/IDS, VPNs, SSO, and 2FA for 100+ users.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3><a href="https://shieldify.pro/" target="_blank">Shieldify.Pro</a></h3>
+                        <div class="job-title">Penetration Tester</div>
+                        <div class="date">Jul 2023 - Present | Remote, Tbilisi, Georgia</div>
+                        <ul class="description-list">
+                            <li>Identified and resolved 50+ critical vulnerabilities across web, mobile, and network environments.</li>
+                            <li>Performed malware triage (static and dynamic) on samples from engagements, extracting IoCs and behaviors.</li>
+                            <li>Built Python helpers for log parsing and YARA-based hunting to accelerate follow-up analysis.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3><a href="https://bankofgeorgia.ge/en/retail/main" target="_blank">Bank of Georgia</a></h3>
+                        <div class="job-title">Pentester, SOC Analyst</div>
+                        <div class="date">May 2023 - Feb 2024 | Hybrid, Tbilisi, Georgia</div>
+                        <ul class="description-list">
+                            <li>Executed controlled attack simulations and captured host/network traces to refine detections and alerts.</li>
+                            <li>Authored concise after-action reports with mitigation steps prioritized by effort and impact.</li>
+                            <li>Detected and mitigated 15+ security threats, reducing incident response time by 25%.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3>Bubbler</h3>
+                        <div class="job-title">Cyber Security Consultant</div>
+                        <div class="date">Nov 2022 - May 2023 | Remote, Tbilisi, Georgia</div>
+                        <ul class="description-list">
+                            <li>Assessed existing security controls and documented gaps in policies, configurations, and monitoring.</li>
+                            <li>Proposed practical hardening measures tailored to client resources and risk profile.</li>
+                            <li>Helped establish a lightweight vulnerability management routine with clear ownership.</li>
+                        </ul>
+                    </div>
+
+                    <div class="job">
+                        <h3><a href="https://clphub.com/" target="_blank">CLPHUB</a></h3>
+                        <div class="job-title">Cyber Security Intern</div>
+                        <div class="date">Mar 2022 - Dec 2022 | Remote, Tbilisi, Georgia</div>
+                        <ul class="description-list">
+                            <li>Assisted with security reviews and created short notes on observed misconfigurations for engineers.</li>
+                            <li>Contributed to 20+ security assessments, identifying critical vulnerabilities and misconfigurations.</li>
+                            <li>Helped reduce overall system risk by ~15% through remediation guidance and follow-up.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="education" class="reveal">
+                <h2>Education</h2>
+                
+                <div class="education-item">
+                    <h3>Constructor University</h3>
+                    <div class="degree">Bachelor of Science in Computer Science</div>
+                    <div class="date">Sep 2024 - Jul 2026 (Expected) | Bremen, Germany</div>
+                    <p class="description">
+                        Currently pursuing BSc in Computer Science with focus on cybersecurity, AI security implications, and software engineering.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Certifications Section -->
+            <section id="certifications" class="reveal">
+                <h2>Certifications</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+                    <div class="cert-item">
+                        <strong>Barracuda WAF</strong><br>
+                        <small>Jul 2024 - Jul 2026</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>IBM QRadar SIEM V7.5</strong><br>
+                        <small>Jun 2024</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Secret Server Associate</strong><br>
+                        <small>Mar 2024</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Google Cybersecurity</strong><br>
+                        <small>May 2023</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Kusto Detective Agency</strong><br>
+                        <small>May 2023</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Threat Intelligence Analyst</strong><br>
+                        <small>Mar 2023</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Cyber Winter 2023</strong><br>
+                        <small>Feb 2023</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Ransomware Uncovered</strong><br>
+                        <small>Feb 2023</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Certified Ethereum Expert</strong><br>
+                        <small>Dec 2022</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Cybersecurity Fundamentals</strong><br>
+                        <small>Dec 2022</small>
+                    </div>
+                   
+                  
+                    <div class="cert-item">
+                        <strong>Phishing Protection</strong><br>
+                        <small>Dec 2022</small>
+                    </div>
+                    <div class="cert-item">
+                        <strong>Cryptocurrency Fundamentals</strong><br>
+                        <small>Nov 2022</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages Section -->
+            <section id="languages" class="reveal">
+                <h2>Languages</h2>
+                <div class="languages">
+                    <div class="language-item">Georgian - Native</div>
+                    <div class="language-item">English - C1</div>
+                    <div class="language-item">Russian - C1</div>
+                    <div class="language-item">German - B2</div>
+                    <div class="language-item">Spanish - B1</div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="reveal">
+                <h2>Skills &amp; Tools</h2>
+                <div class="skills">
+                    <div class="skill-item">Python - Advanced</div>
+                    <div class="skill-item">C/C++ - Advanced</div>
+                    <div class="skill-item">JavaScript</div>
+                    <div class="skill-item">Ghidra</div>
+                    <div class="skill-item">IDA Free</div>
+                    <div class="skill-item">x64dbg/WinDbg</div>
+                    <div class="skill-item">Radare2</div>
+                    <div class="skill-item">YARA</div>
+                    <div class="skill-item">Sigma</div>
+                    <div class="skill-item">MITRE ATT&CK</div>
+                    <div class="skill-item">Wireshark</div>
+                    <div class="skill-item">Zeek</div>
+                    <div class="skill-item">Volatility</div>
+                    <div class="skill-item">Burp Suite</div>
+                    <div class="skill-item">Nmap</div>
+                    <div class="skill-item">WAF &amp; IDS/IPS</div>
+                    <div class="skill-item">IBM QRadar SIEM</div>
+                    <div class="skill-item">Barracuda WAF</div>
+                    <div class="skill-item">Thycotic Secret Server</div>
+                    <div class="skill-item">Certified Ethereum Expert</div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // Typing Animation
+        const phrases = [
+            "Hello, Recruiter! 👋",
+            "Hello, World! 🌍",
+            "Cybersecurity Professional 🔐",
+            "Penetration Tester 🎯",
+            "Malware Analyst 🦠",
+            "Reverse Engineer 🔧",
+            "Threat Intelligence Researcher 🕵️",
+            "SOC Analyst 🛡️",
+            "Computer Science Student 💻",
+            "Let's Secure the Future! 🚀"
+        ];
+
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+
+        function typeText() {
+            const typedTextElement = document.getElementById('typed-text');
+            const currentPhrase = phrases[phraseIndex];
+
+            if (isDeleting) {
+                typedTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 50;
+            } else {
+                typedTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typingSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingSpeed = 500;
+            }
+
+            setTimeout(typeText, typingSpeed);
+        }
+
+        setTimeout(() => {
+            typeText();
+        }, 1500);
+
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 60 + 20 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Scroll reveal animation
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', reveal);
+        setTimeout(reveal, 2500);
+    </script>
+</body>
+</html>
